@@ -1,5 +1,7 @@
 # Excalibur Startproject 2025
 
+- This is something I'll be building upon, upcoming text is still from teachers:
+
 - Vanaf de HR repository: klik op ***USE THIS TEMPLATE***. Kies jouw eigen github account. 
 - Kopieer de `git url` van jouw eigen repository (dit vind je onder de "code" button).
 - Open VS Code. Klik op "file" en kies "clone repository".
