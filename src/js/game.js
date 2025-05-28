@@ -1,55 +1,75 @@
+//to exit simulation use: ^C
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode } from "excalibur"
+import { Actor, Engine, Vector, DisplayMode, SolverStrategy, CollisionType } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
+import { Fish } from './fish.js'
+import { Star } from './star.js'
+import { PlayerCat } from './player.js'
+import { Collectable } from './collectable.js'
+import { UI } from './ui.js'
+import { Deposit } from './deposit.js'
+import { Platform } from './platform.js'
+
+//this.scene.engine
+//this.addChild()
+
+/*Still need:
+- timer 
+- amount of collectables*/
+
+//Active: can move but can't move through other collisions
+//Fixed: can't move but has collision (like platforms)
+//Pasive: doesn't do physics but does have collision events (such as for dialog)
+// this.body.collisionType = CollisionType.[name]
 
 export class Game extends Engine {
+
+    player
+    ui
+
+    //platforms/world
+    platform1
+    platform2
 
     constructor() {
         super({ 
             width: 800,
             height: 600,
             maxFps: 60,
-            displayMode: DisplayMode.FitScreen
+            displayMode: DisplayMode.FitScreen,
+            physics: {
+                solver: SolverStrategy.Realistic, //or Arcade
+                gravity: new Vector(0, 800),
+            }
          })
         this.start(ResourceLoader).then(() => this.startGame())
+        this.showDebug(true);
+
     }
 
     startGame() {
-        
-        let y = Math.random() * 40;
-        
-        console.log("start de game!")
-        const fish = new Actor()
-        fish.graphics.use(Resources.Fish.toSprite())
-        fish.pos = new Vector(500, 300)
-        fish.vel = new Vector(-100,0)
-        fish.events.on("exitviewport", (e) => this.fishLeft(e))
-        this.add(fish)
+ 
+        this.player = new PlayerCat(300, 300);
+        this.add(this.player);
 
-        const floatingKirb = new Actor()
-        floatingKirb.graphics.use(Resources.KirbyUmbrella.toSprite())
-        floatingKirb.pos = new Vector(800, 700) 
-        floatingKirb.vel = new Vector(-20, -30)
-        floatingKirb.scale = new Vector(0.1,0.1)
-        this.add(floatingKirb)
-
-        for(let i = 0; i < 20; i++){
-            let xpos = Math.random() * 800;
-            let xvel = Math.random() * 800;
-            let yvel = Math.random() * 800;
-
-            const star = new Actor()
-            star.graphics.use(Resources.Star.toSprite())
-            star.pos = new Vector(xpos, 0);
-            star.vel = new Vector(xvel, yvel);
-            this.add(star)
-            star.scale = new Vector(0.1, 0.1)
+        for (let i=0; i < 10; i++){
+            let collectable = new Collectable();
+            this.add(collectable);
         }
-    }
 
-    fishLeft(e) {
-        e.target.pos = new Vector(1350, 300)
+        let trashcan = new Deposit(250, 550);
+        this.add(trashcan)
+
+        this.ui = new UI();
+        this.add(this.ui)
+
+        this.platform1 = new Platform(400, 600, 500);
+        this.add(this.platform1);
+
+        this.platform2 = new Platform(400, 500, 200);
+        this.add(this.platform2);
     }
 }
+
 
 new Game()

@@ -1,0 +1,36 @@
+------> Ideas
+
+collectable.js
+- change collision after for example a button is pressed (fixed to active + gravity)
+
+------> Questions
+- How do I tell which at front and which behind? (layering)
+
+
+------> To-do
+- deposit function
+- enemies
+- level itself (just 1 :: collect ....)
+- timer
+- gameover screen
+- title screen
+- npc's
+- player hit
+- animations
+
+
+Next steps:
+- level design
+- put design in game
+- losing life when falling
+- losing life when hit something
+- ground check (for jumping and attacking)
+- two types of reactions to hitting something
+- game over screen (+restart)
+- the goal (1.make goal 2. get notified 3. screen for it)
+- enemies walk around (*enemies have idle)
+- sprites & looks
+- two types of collectables 
+
+- animation
+- sounds
