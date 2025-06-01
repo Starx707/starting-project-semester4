@@ -2,34 +2,38 @@
 import '../css/style.css'
 import { Actor, Engine, Vector, DisplayMode, SolverStrategy, CollisionType } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
-import { Fish } from './fish.js'
-import { Star } from './star.js'
 import { PlayerCat } from './player.js'
-import { Collectable } from './collectable.js'
 import { UI } from './ui.js'
 import { Deposit } from './deposit.js'
 import { Platform } from './platform.js'
-
-//this.scene.engine
-//this.addChild()
-
-/*Still need:
-- timer 
-- amount of collectables*/
-
-//Active: can move but can't move through other collisions
-//Fixed: can't move but has collision (like platforms)
-//Pasive: doesn't do physics but does have collision events (such as for dialog)
-// this.body.collisionType = CollisionType.[name]
+import { Potion } from './potion.js'
+import { Trash } from './trash.js'
+import { Raccoon } from './raccoon.js'
+import { Coin } from './coin.js'
+import { Trap } from './trap.js'
 
 export class Game extends Engine {
 
     player
     ui
 
+    //scores
+    score
+    sassScore
+    potionsCollected
+    goalPoints
+
     //platforms/world
     platform1
     platform2
+    trashcan
+
+    //enemies
+    enemy1
+    trap1
+
+    //states
+    gameOver
 
     constructor() {
         super({ 
@@ -37,14 +41,23 @@ export class Game extends Engine {
             height: 600,
             maxFps: 60,
             displayMode: DisplayMode.FitScreen,
+            pixelArt: true,
+            pixelRatio: 2,
             physics: {
                 solver: SolverStrategy.Realistic, //or Arcade
                 gravity: new Vector(0, 800),
             }
          })
+        
         this.start(ResourceLoader).then(() => this.startGame())
         this.showDebug(true);
 
+        //standard variables
+        this.score = 0;
+        this.goalPoints = 2;
+        this.potionsCollected = 0;
+
+        this.gameOver = false;
     }
 
     startGame() {
@@ -52,22 +65,50 @@ export class Game extends Engine {
         this.player = new PlayerCat(300, 300);
         this.add(this.player);
 
-        for (let i=0; i < 10; i++){
-            let collectable = new Collectable();
-            this.add(collectable);
+        for (let i=0; i < 5; i++){
+            let potion = new Potion();
+            this.add(potion);
+        }
+        for (let i=0; i < 1; i++){
+            let trash = new Trash();
+            this.add(trash);
+        }
+        for (let i=0; i < 3; i++){
+            let coin = new Coin();
+            this.add(coin);
         }
 
-        let trashcan = new Deposit(250, 550);
-        this.add(trashcan)
+        this.trashcan = new Deposit(250, 550);
+        this.add(this.trashcan)
 
         this.ui = new UI();
         this.add(this.ui)
 
-        this.platform1 = new Platform(400, 600, 500);
+        this.platform1 = new Platform(400, 600, 800);
         this.add(this.platform1);
 
         this.platform2 = new Platform(400, 500, 200);
         this.add(this.platform2);
+
+        this.enemy1 = new Raccoon(500, 300);
+        this.add(this.enemy1);
+
+        this.trap1 = new Trap(600, 565);
+        this.add(this.trap1);
+    }
+
+    increasePotionScore(){
+        if(this.potionsCollected >= this.goalPoints){
+            this.#gameWon();
+        } else {
+            this.potionsCollected++;
+        }
+    }
+
+    #gameWon(){
+        console.log("Game Won");
+        this.ui.gameWon();
+        this.score = this.goalPoints;
     }
 }
 

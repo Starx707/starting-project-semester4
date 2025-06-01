@@ -2,19 +2,25 @@ import { Actor, Vector, Engine, Keys, CollisionType, DegreeOfFreedom} from "exca
 import { Resources } from './resources.js'
 import { Collectable } from "./collectable.js";
 import { Deposit } from "./deposit.js";
+import { Trash } from "./trash.js";
+import { Potion } from "./potion.js";
+import { Platform } from "./platform.js";
+import { Raccoon } from "./raccoon.js";
+import { Coin } from "./coin.js";
+import { Glasses } from "./glasses.js";
 
 export class PlayerCat extends Actor {
 
     lives
+
     sass
+    #sassGlasses
+
     #canDeposit
-    //sprinting (sound)
-    //hitting (sound)
-    //jumping X (sound)
-    //mewing X (sound)
-    //holding (more trash = slower?)
-    //*dispose of trash (sound)
-    //getting hit (sound)
+
+    #groundCheck
+
+    gameState
 
 //to add bullets of sorts use this.scene.add(new ... this.posx, this.posy >> for it to spawn nearyby) aka spawning (for trash from npc's)
 
@@ -31,11 +37,11 @@ export class PlayerCat extends Actor {
         super({width:15, height:15})
         this.graphics.use(Resources.PlayerCat.toSprite());
         this.pos = new Vector(x, y)
-        this.scale = new Vector(3, 3)
+        this.scale = new Vector(2,2)
         this.lives = 3;
         this.sass = 0;
         this.#canDeposit = false;
-        this.events.on("exitviewport", (e) => this.resetPosition(e))
+        this.events.on("exitviewport", (e) => this.#playerDefeated(e))
     }
 
     onInitialize(engine){
@@ -47,6 +53,10 @@ export class PlayerCat extends Actor {
         this.body.collisionType = CollisionType.Active;
         //character can't fall over
         this.body.limitDegreeOfFreedom.push(DegreeOfFreedom.Rotation);
+
+        this.gameState = this.scene.engine.gameOver;
+
+        this.sass = 0;
     }
 
 
@@ -54,29 +64,36 @@ export class PlayerCat extends Actor {
         let xspeed = 0;
         let yspeed = 0;
 
-    if(engine.input.keyboard.isHeld(Keys.Left) || engine.input.keyboard.isHeld(Keys.A)){
-        this.body.applyLinearImpulse(new Vector(15 * delta, 0))
-        this.vel = new Vector(-170, this.vel.y)
-    }
-    if(engine.input.keyboard.isHeld(Keys.Right) || engine.input.keyboard.isHeld(Keys.D)){
-        this.body.applyLinearImpulse(new Vector(-15 * delta, 0))
-        this.vel = new Vector(170, this.vel.y)
-    }
-    
-    if(engine.input.keyboard.isHeld(Keys.E)){ //mewing
-        //play audio clip from resources
-    }
+        if(this.gameOver){
+            // console.log("Game state: GO - remove controlls");
+            this.scene.engine.ui.gameOver();
 
-    if(engine.input.keyboard.wasPressed(Keys.Space) || engine.input.keyboard.wasPressed(Keys.ArrowUp) || engine.input.keyboard.wasPressed(Keys.W)){
-        if(this.#canDeposit === true){
-            console.log("deposit trash");
-            console.log(this.#canDeposit);
+        } else{
+            if(engine.input.keyboard.isHeld(Keys.Left) || engine.input.keyboard.isHeld(Keys.A)){
+                this.body.applyLinearImpulse(new Vector(15 * delta, 0))
+                this.vel = new Vector(-170, this.vel.y)
+            }
+            if(engine.input.keyboard.isHeld(Keys.Right) || engine.input.keyboard.isHeld(Keys.D)){
+                this.body.applyLinearImpulse(new Vector(-15 * delta, 0))
+                this.vel = new Vector(170, this.vel.y)
+            }
+            
+            if(engine.input.keyboard.isHeld(Keys.E)){ //mewing
+                //play audio clip from resources
+            }
+        
+            if(engine.input.keyboard.wasPressed(Keys.Space) || engine.input.keyboard.wasPressed(Keys.ArrowUp) || engine.input.keyboard.wasPressed(Keys.W)){
+                if(this.#canDeposit === true){
+                    // console.log("deposit trash");
+                }
+                else{
+                    if(this.#groundCheck === true){
+                        this.body.applyLinearImpulse(new Vector(0, -250 * delta)); 
+                    }
+                }
+            }
         }
-        else{
-            console.log("jump");
-            this.body.applyLinearImpulse(new Vector(0, -250 * delta)); //jump
-        }
-    }
+   
     
 
     }
@@ -84,28 +101,78 @@ export class PlayerCat extends Actor {
     #collision(event){
         if(event.other.owner instanceof Collectable) {
             event.other.owner.kill();
-            this.scene.engine.ui.updateScore();
+        }
+
+        if(event.other.owner instanceof Potion){
+            this.scene.engine.ui.updatePickups("potion", 10);
+            this.scene.engine.increasePotionScore();
+            this.scene.engine.ui.updatePotionsCollected();
+        } //instance of Collectable
+        if(event.other.owner instanceof Trash) {
+            this.scene.engine.ui.updatePickups("trash", 1);
+
+        }
+        if(event.other.owner instanceof Coin){
+            this.scene.engine.ui.updatePickups("coin", 2);
+            if(this.sass < 1){
+                this.sass++
+            } else {
+                this.#sassMode();
+            }
         }
         
         if(event.other.owner instanceof Deposit){
             this.#canDeposit = true;
         }
+
+        if(event.other.owner instanceof Platform || event.other.owner instanceof Raccoon){
+            this.#groundCheck = true;
+        }
     }
 
     #collisionend(event){
-        console.log(event);
         if(event.other.owner instanceof Deposit){
-            console.log("can't deposite anymore")
             this.#canDeposit = false;
+        }
+
+        if(event.other.owner instanceof Platform){
+            this.#groundCheck = false;
         }
     }
 
     #playerDefeated(event){
-        
+        this.resetPosition(event.target);
+        this.loseLife(3);
     }
 
-    resetPosition(event){
-        event.target.pos = new Vector(400, 300)
+    resetPosition(target){
+        target.pos = new Vector(400, 300);
+    }
+
+    loseLife(damage){
+        if(this.lives - damage < 1){
+            console.log("Game over - player");
+            this.scene.engine.ui.gameOver();
+            this.lives = 0;
+        }
+        else{
+            this.lives = this.lives - damage;
+        }
+        this.scene.engine.ui.updateLives();
+    }
+
+    #sassMode(){
+        this.#sassGlasses = new Glasses();
+        this.addChild(this.#sassGlasses);
+
+        let random = Math.floor(Math.random() * 3)
+        if(random === 1){
+            //glasses
+        } else if (random === 2){
+            //high hat
+        } else {
+            //egg?
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import { Collectable } from "./collectable.js";
 
 //talk
 //throw trash
+//hit
 
 export class Npc extends Actor {
 

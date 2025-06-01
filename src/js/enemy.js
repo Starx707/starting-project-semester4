@@ -1,12 +1,18 @@
-import { Actor, Vector, Engine, Keys } from "excalibur"
+import { Actor, Vector, Engine, Keys , CollisionType, DegreeOfFreedom} from "excalibur"
 import { Resources } from './resources.js'
-import { Collectable } from "./collectable.js";
 import { UI } from './ui.js';
+import { PlayerCat } from "./player.js";
 
-export class Enemhy extends Actor {
+export class Enemy extends Actor {
 
-    //attack
-    //die
-    //walk/roam
+    constructor(hitbox){ 
+        super(hitbox)
+    }
+
+    onInitialize(engine){
+        this.body.useGravity = true;
+        this.body.collisionType = CollisionType.Active;
+        this.body.limitDegreeOfFreedom.push(DegreeOfFreedom.Rotation);
+    }
 
 }

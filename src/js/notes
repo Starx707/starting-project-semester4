@@ -1,36 +1,61 @@
 ------> Ideas
 
+concept changes:
+- Remove 2 types of trash
+- Make it all potions and sellables
+- Still hit other ppl
+- Work for Eda the Owl Lady and get stuff she can sell (1.potions 2.human trash 3.scrolls 4.actual trash)
+- The more trash the player holds the slower they become
+
 collectable.js
 - change collision after for example a button is pressed (fixed to active + gravity)
 
-------> Questions
-- How do I tell which at front and which behind? (layering)
+------> Questions:
+- How do I work with layering? Pixel art 
 
-
-------> To-do
+------> To-do:
 - deposit function
 - enemies
 - level itself (just 1 :: collect ....)
-- timer
 - gameover screen
 - title screen
 - npc's
 - player hit
-- animations
+- animations (bonus)
 
 
 Next steps:
 - level design
-- put design in game
-- losing life when falling
-- losing life when hit something
-- ground check (for jumping and attacking)
+- put design in game 
+- losing life when falling ✅
+- losing life when hit something ✅ 
+- ground check (for jumping and attacking) ✅
 - two types of reactions to hitting something
 - game over screen (+restart)
-- the goal (1.make goal 2. get notified 3. screen for it)
+- the goal (1.make goal 2. get notified 3. screen for it) ✅
 - enemies walk around (*enemies have idle)
 - sprites & looks
-- two types of collectables 
+- two types of collectables ✅
 
 - animation
 - sounds
+
+note to self:
+- if variable private then use function to return it and recieve it's value
+//Active: can move but can't move through other collisions
+//Fixed: can't move but has collision (like platforms)
+//Pasive: doesn't do physics but does have collision events (such as for dialog)
+//this.body.collisionType = CollisionType.[name]
+//this.scene.engine
+//this.addChild()
+
+Remove- 
+To-do:
+- trap [ ] bounce [ ] lose hp (2)
+- fall [ ] lose all 3 lives (1)
+- ui [ ] just text & despawn everything (3)
+- *bounce ball [ ] bounciness for physics (4)
+
+gameover:
+- kill everything
+- connect to UI and run function to display a game over screen

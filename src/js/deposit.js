@@ -14,10 +14,5 @@ export class Deposit extends Actor {
 
     onInitialize(engine){
         this.body.collisionType = CollisionType.Passive;
-        
     }
-
-    //function with sound
-    //function that resets 'collected' meter
-    //function that adds to & set the score
 }
