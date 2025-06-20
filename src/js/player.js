@@ -8,6 +8,8 @@ import { Platform } from "./platform.js";
 import { Raccoon } from "./raccoon.js";
 import { Coin } from "./coin.js";
 import { Glasses } from "./glasses.js";
+import { Dogge } from "./strongDogge.js";
+import { Trap } from "./trap.js";
 
 export class PlayerCat extends Actor {
 
@@ -22,7 +24,6 @@ export class PlayerCat extends Actor {
 
     gameState
 
-//to add bullets of sorts use this.scene.add(new ... this.posx, this.posy >> for it to spawn nearyby) aka spawning (for trash from npc's)
 
 /*things that can be edited about physics:
 - mass
@@ -32,7 +33,6 @@ export class PlayerCat extends Actor {
 - collission
 - gravity */
 
-//runs upon creation of instance
     constructor(x, y){ 
         super({width:15, height:15})
         this.graphics.use(Resources.PlayerCat.toSprite());
@@ -41,6 +41,7 @@ export class PlayerCat extends Actor {
         this.lives = 3;
         this.sass = 0;
         this.#canDeposit = false;
+        this.#sassGlasses = new Glasses();
         this.events.on("exitviewport", (e) => this.#playerDefeated(e))
     }
 
@@ -48,10 +49,8 @@ export class PlayerCat extends Actor {
         this.on('collisionstart', (event) => this.#collision(event));
         this.on('collisionend', (event) => this.#collisionend(event));
 
-        //physics & gravity
         this.body.useGravity = true;
         this.body.collisionType = CollisionType.Active;
-        //character can't fall over
         this.body.limitDegreeOfFreedom.push(DegreeOfFreedom.Rotation);
 
         this.gameState = this.scene.engine.gameOver;
@@ -71,10 +70,16 @@ export class PlayerCat extends Actor {
         } else{
             if(engine.input.keyboard.isHeld(Keys.Left) || engine.input.keyboard.isHeld(Keys.A)){
                 this.body.applyLinearImpulse(new Vector(15 * delta, 0))
+                this.graphics.flipHorizontal = true;
+                this.#sassGlasses.graphics.flipHorizontal = true;
+                this.#sassGlasses.pos = new Vector(-2,-1);
                 this.vel = new Vector(-170, this.vel.y)
             }
             if(engine.input.keyboard.isHeld(Keys.Right) || engine.input.keyboard.isHeld(Keys.D)){
                 this.body.applyLinearImpulse(new Vector(-15 * delta, 0))
+                this.graphics.flipHorizontal = false;
+                this.#sassGlasses.graphics.flipHorizontal = false;
+                this.#sassGlasses.pos = new Vector(3,-1);
                 this.vel = new Vector(170, this.vel.y)
             }
             
@@ -107,7 +112,7 @@ export class PlayerCat extends Actor {
             this.scene.engine.ui.updatePickups("potion", 10);
             this.scene.engine.increasePotionScore();
             this.scene.engine.ui.updatePotionsCollected();
-        } //instance of Collectable
+        } 
         if(event.other.owner instanceof Trash) {
             this.scene.engine.ui.updatePickups("trash", 1);
 
@@ -127,6 +132,17 @@ export class PlayerCat extends Actor {
 
         if(event.other.owner instanceof Platform || event.other.owner instanceof Raccoon){
             this.#groundCheck = true;
+        }
+
+        if(event.other.owner instanceof Dogge){
+            this.actions.fade(0, 2000);
+            this.actions.delay(2000);
+            this.loseLife(2);
+        }
+
+        if(event.other.owner instanceof Trap){
+            this.actions.moveBy(new Vector(-100, -100), 1000)
+            this.actions.blink(200, 100, 5);
         }
     }
 
@@ -151,18 +167,18 @@ export class PlayerCat extends Actor {
 
     loseLife(damage){
         if(this.lives - damage < 1){
-            console.log("Game over - player");
+            //game over sound
             this.scene.engine.ui.gameOver();
             this.lives = 0;
         }
         else{
             this.lives = this.lives - damage;
+            this.actions.blink(100, 100, 3);
         }
         this.scene.engine.ui.updateLives();
     }
 
     #sassMode(){
-        this.#sassGlasses = new Glasses();
         this.addChild(this.#sassGlasses);
 
         let random = Math.floor(Math.random() * 3)

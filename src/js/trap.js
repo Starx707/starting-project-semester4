@@ -1,9 +1,9 @@
-import {CollisionType, DegreeOfFreedom, Vector} from "excalibur";
+import {CollisionType, DegreeOfFreedom, Vector, Actor} from "excalibur";
 import { Enemy } from "./enemy.js";
 import { Resources } from './resources.js';
 import { PlayerCat } from "./player.js";
 
-export class Trap extends Enemy {
+export class Trap extends Actor {
     constructor(x, y){
         super({width: Resources.Spikes.toSprite().width, height: Resources.Spikes.toSprite().height})
         this.graphics.use(Resources.Spikes.toSprite());
@@ -19,7 +19,7 @@ export class Trap extends Enemy {
 
     #collision(e){
         if(e.other.owner instanceof PlayerCat) {
-            this.scene.engine.player.loseLife(2);
+            this.scene.engine.player.loseLife(1);
         } else {
             e.other.owner.kill();
         }

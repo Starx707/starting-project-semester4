@@ -22,12 +22,14 @@ const Resources = {
     Coin: new ImageSource ('images/coin1.png'),
     Glasses: new ImageSource('images/glasses.png'),
     PinkGlasses: new ImageSource('images/pink-glasses.png'),
+    Ball: new ImageSource('images/ball.webp'),
 
     //player sprites
 
 
     //enemy sprites
     RaccoonEnemy: new ImageSource('images/raccoon_idle_frame1.png'),
+    Dogge: new ImageSource('images/instakillDog.png'),
 
     //ui
     HPFull: new ImageSource('images/hp/hearts-3.png'),

@@ -11,6 +11,8 @@ import { Trash } from './trash.js'
 import { Raccoon } from './raccoon.js'
 import { Coin } from './coin.js'
 import { Trap } from './trap.js'
+import { Ball } from './ball.js'
+import { Dogge } from './strongDogge.js'
 
 export class Game extends Engine {
 
@@ -27,10 +29,13 @@ export class Game extends Engine {
     platform1
     platform2
     trashcan
+    ball
 
     //enemies
+    setEnemy
     enemy1
     trap1
+    dogge
 
     //states
     gameOver
@@ -54,7 +59,7 @@ export class Game extends Engine {
 
         //standard variables
         this.score = 0;
-        this.goalPoints = 2;
+        this.goalPoints = 4;
         this.potionsCollected = 0;
 
         this.gameOver = false;
@@ -95,10 +100,14 @@ export class Game extends Engine {
 
         this.trap1 = new Trap(600, 565);
         this.add(this.trap1);
+
+        this.dogge = new Dogge(250, 550);
+        this.add(this.dogge);
     }
 
     increasePotionScore(){
         if(this.potionsCollected >= this.goalPoints){
+            //seen bool for game ready won (in player if at spawn point and true run win game here)
             this.#gameWon();
         } else {
             this.potionsCollected++;
