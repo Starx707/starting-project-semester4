@@ -12,7 +12,7 @@ import { Raccoon } from './raccoon.js'
 import { Coin } from './coin.js'
 import { Trap } from './trap.js'
 import { Ball } from './ball.js'
-import { Dogge } from './strongDogge.js'
+import { BackgroundLevel } from './background.js'
 
 export class Game extends Engine {
 
@@ -30,12 +30,12 @@ export class Game extends Engine {
     platform2
     trashcan
     ball
+    background
 
     //enemies
     setEnemy
     enemy1
     trap1
-    dogge
 
     //states
     gameOver
@@ -70,6 +70,9 @@ export class Game extends Engine {
         this.player = new PlayerCat(300, 300);
         this.add(this.player);
 
+        this.background = new BackgroundLevel();
+        this.add(this.background);
+
         for (let i=0; i < 5; i++){
             let potion = new Potion();
             this.add(potion);
@@ -83,13 +86,14 @@ export class Game extends Engine {
             this.add(coin);
         }
 
-        this.trashcan = new Deposit(250, 550);
-        this.add(this.trashcan)
+        //feature will be added later on
+        // this.trashcan = new Deposit(250, 550);
+        // this.add(this.trashcan)
 
         this.ui = new UI();
         this.add(this.ui)
 
-        this.platform1 = new Platform(400, 600, 800);
+        this.platform1 = new Platform(40, 595, 650);
         this.add(this.platform1);
 
         this.platform2 = new Platform(400, 500, 200);
@@ -100,9 +104,6 @@ export class Game extends Engine {
 
         this.trap1 = new Trap(600, 565);
         this.add(this.trap1);
-
-        this.dogge = new Dogge(250, 550);
-        this.add(this.dogge);
     }
 
     increasePotionScore(){

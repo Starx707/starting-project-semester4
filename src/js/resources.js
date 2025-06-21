@@ -9,11 +9,11 @@ const Resources = {
     Star: new ImageSource('images/star.png'),
     Goomba: new ImageSource('images/goomba.png'),
     Background: new ImageSource('images/background.jpg'),
-    PlayerCat: new ImageSource('images/cat-idle-v1.png'),
     FishBone: new ImageSource('images/collectable-fish.png'),
 
     //backgrounds
     TheHouse: new ImageSource('images/backgrounds/startingimage.png'),
+    Level: new ImageSource('images/backgrounds/level-design-programming.png'),
 
     //sprites
     TrashCan: new ImageSource('images/trashcan.png'),
@@ -25,11 +25,11 @@ const Resources = {
     Ball: new ImageSource('images/ball.webp'),
 
     //player sprites
+    PlayerCat: new ImageSource('images/cat-idle-v1.png'),
 
 
     //enemy sprites
     RaccoonEnemy: new ImageSource('images/raccoon_idle_frame1.png'),
-    Dogge: new ImageSource('images/instakillDog.png'),
 
     //ui
     HPFull: new ImageSource('images/hp/hearts-3.png'),

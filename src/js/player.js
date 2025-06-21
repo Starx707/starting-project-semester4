@@ -8,7 +8,6 @@ import { Platform } from "./platform.js";
 import { Raccoon } from "./raccoon.js";
 import { Coin } from "./coin.js";
 import { Glasses } from "./glasses.js";
-import { Dogge } from "./strongDogge.js";
 import { Trap } from "./trap.js";
 
 export class PlayerCat extends Actor {
@@ -132,12 +131,6 @@ export class PlayerCat extends Actor {
 
         if(event.other.owner instanceof Platform || event.other.owner instanceof Raccoon){
             this.#groundCheck = true;
-        }
-
-        if(event.other.owner instanceof Dogge){
-            this.actions.fade(0, 2000);
-            this.actions.delay(2000);
-            this.loseLife(2);
         }
 
         if(event.other.owner instanceof Trap){

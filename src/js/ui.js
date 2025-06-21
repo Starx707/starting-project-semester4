@@ -118,7 +118,7 @@ export class UI extends ScreenElement {
         this.scene.engine.platform1.kill();
         this.scene.engine.platform2.kill();
         this.scene.engine.trap1.kill();
-        this.scene.engine.trashcan.kill();
+        // this.scene.engine.trashcan.kill();
 
         this.#potionsCollectedText.text = ` `;
         this.#hpText.text = ` `;
