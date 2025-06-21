@@ -68,7 +68,6 @@ export class Game extends Engine {
          })
         
         this.start(ResourceLoader).then(() => this.startGame())
-        this.showDebug(true);
 
         //standard variables
         this.score = 0;
