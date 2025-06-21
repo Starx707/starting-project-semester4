@@ -32,7 +32,6 @@ export class Game extends Engine {
     mushroom3
     mushroom4
     mushroom5
-    mushroom6
     otherPlatform
     trashcan
     ball
@@ -108,17 +107,14 @@ export class Game extends Engine {
         this.mushroom2 = new Platform(780, 450, 180); //x,y, width
         this.add(this.mushroom2);
 
-        this.mushroom3 = new Platform(550, 355, 150); 
+        this.mushroom3 = new Platform(550, 355, 150); //done
         this.add(this.mushroom3);
 
-        this.mushroom4 = new Platform(810, 360, 180);
+        this.mushroom4 = new Platform(310, 295, 180);//done
         this.add(this.mushroom4);
 
-        this.mushroom5 = new Platform(810, 360, 180);
+        this.mushroom5 = new Platform(60, 215, 180);
         this.add(this.mushroom5);
-
-        this.mushroom6 = new Platform(810, 360, 180);
-        this.add(this.mushroom6);
 
         this.otherPlatform = new Platform(910, 595, 620);
         this.add(this.otherPlatform);
