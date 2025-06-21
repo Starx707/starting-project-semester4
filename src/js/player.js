@@ -16,6 +16,7 @@ export class PlayerCat extends Actor {
 
     sass
     #sassGlasses
+    isSass
 
     #canDeposit
 
@@ -53,6 +54,7 @@ export class PlayerCat extends Actor {
         this.body.limitDegreeOfFreedom.push(DegreeOfFreedom.Rotation);
 
         this.gameState = this.scene.engine.gameOver;
+        this.isSass = false;
 
         this.sass = 0;
     }
@@ -172,16 +174,20 @@ export class PlayerCat extends Actor {
     }
 
     #sassMode(){
-        this.addChild(this.#sassGlasses);
+        if(this.isSass === false){
+            this.isSass = true;
+            this.addChild(this.#sassGlasses);
 
-        let random = Math.floor(Math.random() * 3)
-        if(random === 1){
-            //glasses
-        } else if (random === 2){
-            //high hat
-        } else {
+            let random = Math.floor(Math.random() * 3)
+         if(random === 1){
+                 //glasses
+            } else if (random === 2){
+             //high hat
+            } else {
             //egg?
+            }
         }
+        
     }
 
 }
