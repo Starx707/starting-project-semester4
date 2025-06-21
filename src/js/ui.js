@@ -123,6 +123,7 @@ export class UI extends ScreenElement {
         this.scene.engine.mushroom5.kill();
         this.scene.engine.otherPlatform.kill();
         this.scene.engine.trap1.kill();
+        this.scene.engine.trap2.kill();
         this.scene.engine.spawnPoint.kill();
         // this.scene.engine.trashcan.kill();
 
