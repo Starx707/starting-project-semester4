@@ -39,8 +39,8 @@ const Resources = {
     HPOne: new ImageSource('images/hp/hearts-1.png'),
     HPNone: new ImageSource('images/hp/hearts-0.png'),
 
-    //fonts
-    
+    //audio
+    BackgroundAudio: new Sound('audio/pikmin-audio-combo.mp3')
 }
 
 

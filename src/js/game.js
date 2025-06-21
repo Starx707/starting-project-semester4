@@ -1,6 +1,6 @@
 //to exit simulation use: ^C
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode, SolverStrategy, CollisionType } from "excalibur"
+import { Engine, Vector, DisplayMode, SolverStrategy, Loader } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { PlayerCat } from './player.js'
 import { UI } from './ui.js'
@@ -62,7 +62,7 @@ export class Game extends Engine {
             pixelArt: true,
             pixelRatio: 2,
             physics: {
-                solver: SolverStrategy.Realistic, //or Arcade
+                solver: SolverStrategy.Realistic,
                 gravity: new Vector(0, 800),
             }
          })
@@ -80,6 +80,7 @@ export class Game extends Engine {
         this.spawny = 530;
 
         this.gameOver = false;
+        
     }
 
     startGame() {
@@ -116,7 +117,7 @@ export class Game extends Engine {
         this.mushroom1 = new Platform(515, 500, 180);
         this.add(this.mushroom1);
 
-        this.mushroom2 = new Platform(780, 450, 180); //x,y, width
+        this.mushroom2 = new Platform(780, 450, 180);
         this.add(this.mushroom2);
 
         this.mushroom3 = new Platform(550, 355, 150);
@@ -142,11 +143,14 @@ export class Game extends Engine {
 
         this.spawnPoint = new Point(this.spawnx, this.spawny, 45);
         this.add(this.spawnPoint);
+
+        Resources.BackgroundAudio.volume = 0.5;
+        Resources.BackgroundAudio.loop = true;
+        Resources.BackgroundAudio.play();
     }
 
     increasePotionScore(){
         if(this.potionsCollected >= this.goalPoints){
-            //seen bool for game ready won (in player if at spawn point and true run win game here)
             this.goalReached = true;
         } else {
             this.potionsCollected++;
