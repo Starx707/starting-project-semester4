@@ -13,6 +13,7 @@ import { Coin } from './coin.js'
 import { Trap } from './trap.js'
 import { Ball } from './ball.js'
 import { BackgroundLevel } from './background.js'
+import { Point } from './spawn-point.js'
 
 export class Game extends Engine {
 
@@ -24,6 +25,7 @@ export class Game extends Engine {
     sassScore
     potionsCollected
     goalPoints
+    goalReached
 
     //platforms/world
     startingPlatform
@@ -37,10 +39,16 @@ export class Game extends Engine {
     ball
     background
 
+    //spawn point
+    spawnPoint
+    spawnx
+    spawny
+
     //enemies
     setEnemy
     enemy1
     trap1
+    trap2
 
     //states
     gameOver
@@ -66,19 +74,23 @@ export class Game extends Engine {
         this.score = 0;
         this.goalPoints = 4;
         this.potionsCollected = 0;
+        this.goalReached = false;
+
+        this.spawnx = 180;
+        this.spawny = 530;
 
         this.gameOver = false;
     }
 
     startGame() {
  
-        this.player = new PlayerCat(300, 300);
+        this.player = new PlayerCat(this.spawnx, this.spawny);
         this.add(this.player);
 
         this.background = new BackgroundLevel();
         this.add(this.background);
 
-        for (let i=0; i < 5; i++){
+        for (let i=0; i < 7; i++){
             let potion = new Potion();
             this.add(potion);
         }
@@ -107,10 +119,10 @@ export class Game extends Engine {
         this.mushroom2 = new Platform(780, 450, 180); //x,y, width
         this.add(this.mushroom2);
 
-        this.mushroom3 = new Platform(550, 355, 150); //done
+        this.mushroom3 = new Platform(550, 355, 150);
         this.add(this.mushroom3);
 
-        this.mushroom4 = new Platform(310, 295, 180);//done
+        this.mushroom4 = new Platform(310, 295, 180);
         this.add(this.mushroom4);
 
         this.mushroom5 = new Platform(60, 215, 180);
@@ -124,19 +136,24 @@ export class Game extends Engine {
 
         this.trap1 = new Trap(640, 555);
         this.add(this.trap1);
+
+        this.trap2 = new Trap(700, 555);
+        this.add(this.trap2);
+
+        this.spawnPoint = new Point(this.spawnx, this.spawny, 45);
+        this.add(this.spawnPoint);
     }
 
     increasePotionScore(){
         if(this.potionsCollected >= this.goalPoints){
             //seen bool for game ready won (in player if at spawn point and true run win game here)
-            this.#gameWon();
+            this.goalReached = true;
         } else {
             this.potionsCollected++;
         }
     }
 
-    #gameWon(){
-        console.log("Game Won");
+    gameWon(){
         this.ui.gameWon();
         this.score = this.goalPoints;
     }

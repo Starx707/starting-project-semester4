@@ -11,8 +11,8 @@ export class Collectable extends Actor {
         
         let xposition = Math.random() * 800
         let yposition = Math.random() * 800
-        this.graphics.use(Resources.FishBone.toSprite());
         this.pos = new Vector(xposition, yposition);
+        this.graphics.use(Resources.FishBone.toSprite());
         this.body.limitDegreeOfFreedom.push(DegreeOfFreedom.Rotation);
     }
 

@@ -1,13 +1,27 @@
 import { Actor, Vector, Engine, Keys, CollisionType, DegreeOfFreedom} from "excalibur"
 import { Resources } from './resources.js'
+import { PlayerCat } from "./player.js";
 
 
-export class Carpet extends Actor {
+export class Point extends Actor {
 
-    constructor(x, y){ 
-        super({width:150, height:5})
-        this.graphics.use(); //Resources.name.toSprite()
+    gameWon
+
+    constructor(x, y, chosWidth){ 
+        super({width: chosWidth, height:60})
         this.pos = new Vector(x, y);
     }
-
+    
+    onInitialize(){
+        this.on('collisionstart', (event) => this.#collision(event));
+    }
+    
+    #collision(e){
+        this.gameWon = this.scene.engine.goalReached;
+        if(e.other.owner instanceof PlayerCat) {
+            if(this.gameWon === true){
+                this.scene.engine.gameWon();
+            }
+        }
+    }
 }

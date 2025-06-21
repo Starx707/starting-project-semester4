@@ -18,6 +18,8 @@ const Resources = {
     //sprites
     TrashCan: new ImageSource('images/trashcan.png'),
     Potion1: new ImageSource('images/Potion1.png'),
+    Potion2: new ImageSource('images/potion2.png'),
+    Potion3: new ImageSource('images/potion3.png'),
     Spikes: new ImageSource ('images/spikes.png'),
     Coin: new ImageSource ('images/coin1.png'),
     Glasses: new ImageSource('images/glasses.png'),
