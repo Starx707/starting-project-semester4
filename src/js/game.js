@@ -26,8 +26,14 @@ export class Game extends Engine {
     goalPoints
 
     //platforms/world
-    platform1
-    platform2
+    startingPlatform
+    mushroom1
+    mushroom2
+    mushroom3
+    mushroom4
+    mushroom5
+    mushroom6
+    otherPlatform
     trashcan
     ball
     background
@@ -93,16 +99,34 @@ export class Game extends Engine {
         this.ui = new UI();
         this.add(this.ui)
 
-        this.platform1 = new Platform(40, 595, 650);
-        this.add(this.platform1);
+        this.startingPlatform = new Platform(40, 595, 620);
+        this.add(this.startingPlatform);
 
-        this.platform2 = new Platform(400, 500, 200);
-        this.add(this.platform2);
+        this.mushroom1 = new Platform(515, 500, 180);
+        this.add(this.mushroom1);
+
+        this.mushroom2 = new Platform(780, 450, 180); //x,y, width
+        this.add(this.mushroom2);
+
+        this.mushroom3 = new Platform(550, 355, 150); 
+        this.add(this.mushroom3);
+
+        this.mushroom4 = new Platform(810, 360, 180);
+        this.add(this.mushroom4);
+
+        this.mushroom5 = new Platform(810, 360, 180);
+        this.add(this.mushroom5);
+
+        this.mushroom6 = new Platform(810, 360, 180);
+        this.add(this.mushroom6);
+
+        this.otherPlatform = new Platform(910, 595, 620);
+        this.add(this.otherPlatform);
 
         this.enemy1 = new Raccoon(500, 300);
         this.add(this.enemy1);
 
-        this.trap1 = new Trap(600, 565);
+        this.trap1 = new Trap(640, 555);
         this.add(this.trap1);
     }
 

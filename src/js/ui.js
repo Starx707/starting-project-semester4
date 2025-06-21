@@ -115,8 +115,14 @@ export class UI extends ScreenElement {
 
     #removeLevel(){
         this.scene.engine.player.kill();
-        this.scene.engine.platform1.kill();
-        this.scene.engine.platform2.kill();
+        this.scene.engine.startingPlatform.kill();
+        this.scene.engine.mushroom1.kill();
+        this.scene.engine.mushroom2.kill();
+        this.scene.engine.mushroom3.kill();
+        this.scene.engine.mushroom4.kill();
+        this.scene.engine.mushroom5.kill();
+        this.scene.engine.mushroom6.kill();
+        this.scene.engine.otherPlatform.kill();
         this.scene.engine.trap1.kill();
         // this.scene.engine.trashcan.kill();
 
